@@ -775,7 +775,8 @@ func (dst *Int) Scan(src interface{}) error {
 	case string:
 		return dst.scanScientificFromString(src)
 	case []byte:
-		return dst.scanScientificFromString(string(src))
+		dst.SetBytes(src)
+		return nil
 	}
 	return errors.New("unsupported type")
 }
@@ -815,7 +816,7 @@ func (dst *Int) scanScientificFromString(src string) error {
 // In MariaDB/MySQL, this will work with the Numeric/Decimal types up to 65 digits, however any more and you should use either VarChar or Char(79)
 // In SqLite, use TEXT
 func (src *Int) Value() (driver.Value, error) {
-	return src.Dec(), nil
+	return src.Bytes(), nil
 }
 
 var (
